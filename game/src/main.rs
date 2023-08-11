@@ -53,17 +53,10 @@ struct Game {
 }
 */
 
-
-    
-
-
-
 #[derive(Clone)]
 struct Player {
     name: String,
     c: u8,
-    //board: &'a mut Map,
-    //board: &mut Map,
 }
 impl Player {
     /* // new!!
@@ -96,14 +89,13 @@ impl Player {
 }
 
 //#[derive(Clone)]
-pub struct Map<'a>{
+pub struct Map<'a> {
     index: [[u8; 10]; 10],
-    //game: Game,
-    players: [&'a  Player; 2],
+    players: [&'a Player; 2],
 }
 
 // 重写`Display` 显示棋盘
-impl fmt::Display for Map<'_>{
+impl fmt::Display for Map<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut s: String = String::from("");
         for n in self.index {
@@ -122,18 +114,7 @@ impl fmt::Display for Map<'_>{
     }
 }
 
-impl Map<'_>{
-    /* // old??
-    fn goto(&mut self, p: Player, c: Point2D) -> Result<Self, bool> {
-        //let c = Point2D::create();
-        if self.index[c.x as usize][c.y as usize] != 0 {
-            println!("这里已经有人了.");
-            return Err(false);
-        }
-        self.index[c.x as usize][c.y as usize] = p.c;
-        println!("player [{}] goto the [{},{}]", p.name, c.x, c.y);
-        return Ok(*self);
-    }*/
+impl Map<'_> {
     fn goto(&mut self, p: Player) {
         loop {
             let c: Point2D = Point2D::create();
@@ -152,28 +133,22 @@ fn main() {
     let p1: Player = Player {
         name: String::from("nmsl"),
         c: 1,
-        //board: &mut b1,
     };
     let p2: Player = Player {
         name: String::from("cnmd"),
         c: 2,
-        //board: &mut b1,
     };
     let mut b1: Map = Map {
         index: [[0; 10]; 10],
-        players: [&p1 ,&p2],
+        players: [&p1, &p2],
     };
-    loop{
-        let mut i: usize = 0;
-        b1.goto(*b1.players[i]);
+    loop {
+        b1.goto(b1.players[0].clone());
+        println!("{:#}",b1);
+        b1.goto(b1.players[1].clone());
+        println!("{:#}",b1);
     }
 
-    /* 
-    p1.goto();
-    println!("{}", b1);
-    p2.goto();
-    println!("{}", b1);
-    */
     /*
     let mut a:[[u8;10];10] = [[0; 10]; 10];
     // 美化打印
