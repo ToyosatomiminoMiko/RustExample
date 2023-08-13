@@ -132,7 +132,7 @@ impl Map<'_> {
                 continue;
             } else {
                 self.index[c.x as usize][c.y as usize] = p.c;
-                println!("player [{}] goto the [{},{}]", p.name, c.x, c.y);
+                println!("玩家[{}]进[{},{}].", p.name, c.x, c.y);
                 break;
             }
         }
