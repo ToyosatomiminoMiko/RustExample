@@ -39,9 +39,15 @@ impl Point2D {
                     Ok(y0) => {
                         break Point2D { x: x0, y: y0 };
                     }
-                    Err(_) => continue,
+                    Err(_) => {
+                        println!("请输入坐标!");
+                        continue;
+                    }
                 },
-                Err(_) => continue,
+                Err(_) => {
+                    println!("请输入坐标!");
+                    continue;
+                }
             };
         }
     }
@@ -105,7 +111,7 @@ impl fmt::Display for Map<'_> {
                 } else if m == 2 {
                     s += "#";
                 } else {
-                    s += " ";
+                    s += "+";
                 }
             }
             s += "\n";
@@ -118,13 +124,17 @@ impl Map<'_> {
     fn goto(&mut self, p: Player) {
         loop {
             let c: Point2D = Point2D::create();
-            if self.index[c.x as usize][c.y as usize] != 0 {
+            if (c.x > 9) | (c.y > 9) {
+                println!("超出范围,请重新输入.");
+                continue;
+            } else if self.index[c.x as usize][c.y as usize] != 0 {
                 println!("这里已经有人了.");
                 continue;
+            } else {
+                self.index[c.x as usize][c.y as usize] = p.c;
+                println!("player [{}] goto the [{},{}]", p.name, c.x, c.y);
+                break;
             }
-            self.index[c.x as usize][c.y as usize] = p.c;
-            println!("player [{}] goto the [{},{}]", p.name, c.x, c.y);
-            break;
         }
     }
 }
@@ -144,17 +154,8 @@ fn main() {
     };
     loop {
         b1.goto(b1.players[0].clone());
-        println!("{:#}",b1);
+        println!("{:#}", b1);
         b1.goto(b1.players[1].clone());
-        println!("{:#}",b1);
+        println!("{:#}", b1);
     }
-
-    /*
-    let mut a:[[u8;10];10] = [[0; 10]; 10];
-    // 美化打印
-    let m:u8 = 1;
-    let n:u8 = 1;
-    let c:u8 = 2;
-    a[m as usize][n as usize] = c;
-    println!("{:?}", a[m as usize][n as usize]);*/
 }
