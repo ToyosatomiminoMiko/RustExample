@@ -1,14 +1,22 @@
 use std::fmt;
 //use std::fmt::Error;
 use std::io;
-use std::num::ParseIntError;
+//use std::num::ParseIntError;
 
-fn stoi(s: &str) -> Result<u8, ParseIntError> {
-    /*
-    字符串转无符号8位整数
-     */
-    s.trim().parse::<u8>()
+fn string_to_static_str(s: String) -> &'static str {
+    //将`String`转换为`&str`
+    Box::leak(s.into_boxed_str())
 }
+
+fn stoi(s: &str) -> u8 {
+    //字符串转无符号8位整数
+    s.trim().parse::<u8>().expect("请输入坐标!")
+}
+/*
+fn stoi(s: &str) -> Result<u8, ParseIntError> {
+    //字符串转无符号8位整数
+    s.trim().parse::<u8>()
+}*/
 
 #[derive(Debug)]
 pub struct Point2D {
@@ -34,6 +42,12 @@ impl Point2D {
             let v: Vec<&str> = input.trim().split(',').collect();
             // 移除字符串前后空格后以逗号分隔解析输入坐标
             //println!("{:?},{:?}", stoi(v[0]), stoi(v[1]));
+
+            return Point2D {
+                x: stoi(v[0]),
+                y: stoi(v[1]),
+            };
+            /*
             match stoi(v[0]) {
                 Ok(x0) => match stoi(v[1]) {
                     Ok(y0) => {
@@ -48,7 +62,7 @@ impl Point2D {
                     println!("请输入坐标!");
                     continue;
                 }
-            };
+            };*/
         }
     }
 }
@@ -104,17 +118,21 @@ pub struct Map<'a> {
 impl fmt::Display for Map<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut s: String = String::from("");
+        println!("  0 1 2 3 4 5 6 7 8 9");
+        let mut r: u8 = 0;
         for n in self.index {
+            s += string_to_static_str(r.to_string());
             for m in n {
                 if m == 1 {
-                    s += "@";
+                    s += " @";
                 } else if m == 2 {
-                    s += "#";
+                    s += " #";
                 } else {
-                    s += "+";
+                    s += " +";
                 }
             }
             s += "\n";
+            r += 1;
         }
         write!(f, "{}", s)
     }
