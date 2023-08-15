@@ -4,7 +4,8 @@ use std::io;
 use std::num::ParseIntError;
 //use std::process::Command;
 
-fn clear(){ // 清除屏幕
+fn clear() {
+    // 清除屏幕
     print!("\x1Bc");
 }
 
@@ -48,7 +49,7 @@ impl Point2D {
             let v: Vec<&str> = input.trim().split(',').collect();
             // 移除字符串前后空格后以逗号分隔解析输入坐标
             //println!("{:?},{:?}", stoi(v[0]), stoi(v[1]));
-            /* 
+            /*
             return Point2D {
                 x: stoi(v[0]),
                 y: stoi(v[1]),
@@ -185,7 +186,7 @@ fn main() {
     loop {
         println!("{:#}", b1);
         b1.goto(b1.players[0].clone());
-        println!("{:#}", b1);   
+        println!("{:#}", b1);
         b1.goto(b1.players[1].clone());
     }
 }
