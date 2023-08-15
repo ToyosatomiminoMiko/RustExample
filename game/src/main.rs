@@ -2,7 +2,13 @@ use std::fmt;
 //use std::fmt::Error;
 use std::io;
 use std::num::ParseIntError;
-
+use std::process::Command;
+/*
+fn clear(){
+    let output = Command::new("cls").output().expect("shell error..");
+    let c = String::from_utf8(output.stdout);
+}
+*/
 fn string_to_static_str(s: String) -> &'static str {
     //将`String`转换为`&str`
     Box::leak(s.into_boxed_str())
@@ -142,15 +148,19 @@ impl fmt::Display for Map<'_> {
 impl Map<'_> {
     fn goto(&mut self, p: Player) {
         loop {
+            println!("玩家[{}]请输入坐标:", p.name);
             let c: Point2D = Point2D::create();
             if (c.x > 9) | (c.y > 9) {
+                //print!("\x1Bc");
                 println!("超出范围,请重新输入.");
                 continue;
             } else if self.index[c.x as usize][c.y as usize] != 0 {
+                //print!("\x1Bc");
                 println!("这里已经有人了.");
                 continue;
             } else {
                 self.index[c.x as usize][c.y as usize] = p.c;
+                print!("\x1Bc");
                 println!("玩家[{}]进[{},{}].", p.name, c.x, c.y);
                 break;
             }
@@ -171,10 +181,11 @@ fn main() {
         index: [[0; 10]; 10],
         players: [&p1, &p2],
     };
+    print!("\x1Bc");
     loop {
+        println!("{:#}", b1);
         b1.goto(b1.players[0].clone());
-        println!("{:#}", b1);
+        println!("{:#}", b1);   
         b1.goto(b1.players[1].clone());
-        println!("{:#}", b1);
     }
 }
