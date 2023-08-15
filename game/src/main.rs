@@ -181,6 +181,7 @@ fn main() {
         players: [&p1, &p2],
     };
     clear();
+    println!("开始游戏...   Copyright GPL-2.0");
     loop {
         println!("{:#}", b1);
         b1.goto(b1.players[0].clone());
