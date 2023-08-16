@@ -3,6 +3,13 @@ use std::fmt;
 use std::io;
 use std::num::ParseIntError;
 //use std::process::Command;
+fn range_check(c: &Point2D, a: u8, b: u8) -> bool {
+    if (c.x > a) | (c.y > b) {
+        true
+    } else {
+        false
+    }
+}
 
 fn clear() {
     // 清除屏幕
@@ -146,23 +153,50 @@ impl fmt::Display for Map<'_> {
 }
 
 impl Map<'_> {
-    fn goto(&mut self, p: Player) {
+    fn goto(&mut self, p: Player) -> bool{
         loop {
             println!("玩家[{}]请输入坐标:", p.name);
             let c: Point2D = Point2D::create();
-            if (c.x > 9) | (c.y > 9) {
+            if range_check(&c, 9, 9) {
                 //clear();
                 println!("超出范围,请重新输入.");
                 continue;
-            } else if self.index[c.x as usize][c.y as usize] != 0 {
+            } else if self.index[c.y as usize][c.x as usize] != 0 {
                 //clear();
                 println!("这里已经有人了.");
                 continue;
             } else {
-                self.index[c.x as usize][c.y as usize] = p.c;
+                self.index[c.y as usize][c.x as usize] = p.c;
                 clear();
                 println!("玩家[{}]进[{},{}].", p.name, c.x, c.y);
-                break;
+                // 判断胜负!
+                let mut win: u8 = 0;
+                // TODO
+                for x in (c.x as i8 - 1)..(c.x as i8 + 2) {
+                    if (x >= 0) & (x <= 9) {
+                        for y in (c.y as i8 - 1)..(c.y as i8 + 2) {
+                            if (y >= 0) & (y <= 9) {
+                                if (x == c.x as i8) & (y == c.y as i8) {
+                                    continue;
+                                } else {
+                                    print!("[{},{}]", x, y);
+                                    if self.index[x as usize][y as usize] == p.c {
+                                        win += 1;
+                                        if win == 5 {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+                println!("");
+                return false;
             }
         }
     }
@@ -182,11 +216,17 @@ fn main() {
         players: [&p1, &p2],
     };
     clear();
-    println!("开始游戏...   Copyright GPL-2.0");
+    println!("开始游戏...   © GPL-2.0");
     loop {
         println!("{:#}", b1);
-        b1.goto(b1.players[0].clone());
+        if b1.goto(b1.players[0].clone()){
+            println!("{}获胜", p1.name);
+            break;
+        }
         println!("{:#}", b1);
-        b1.goto(b1.players[1].clone());
+        if b1.goto(b1.players[1].clone()){
+            println!("{}获胜", p2.name);
+            break;
+        }
     }
 }
