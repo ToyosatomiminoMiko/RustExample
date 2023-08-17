@@ -153,7 +153,7 @@ impl fmt::Display for Map<'_> {
 }
 
 impl Map<'_> {
-    fn goto(&mut self, p: Player) -> bool{
+    fn goto(&mut self, p: Player) -> bool {
         loop {
             println!("玩家[{}]请输入坐标:", p.name);
             let c: Point2D = Point2D::create();
@@ -172,28 +172,14 @@ impl Map<'_> {
                 // 判断胜负!
                 let mut win: u8 = 0;
                 // TODO
-                for x in (c.x as i8 - 1)..(c.x as i8 + 2) {
-                    if (x >= 0) & (x <= 9) {
-                        for y in (c.y as i8 - 1)..(c.y as i8 + 2) {
-                            if (y >= 0) & (y <= 9) {
-                                if (x == c.x as i8) & (y == c.y as i8) {
-                                    continue;
-                                } else {
-                                    print!("[{},{}]", x, y);
-                                    if self.index[x as usize][y as usize] == p.c {
-                                        win += 1;
-                                        if win == 5 {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            } else {
-                                continue;
-                            }
-                        }
-                    } else {
-                        continue;
-                    }
+                let cx: i8 = c.x as i8;
+                let cy: i8 = c.y as i8;
+                
+                for i in 0..5 {
+                    println!("[{},{}]", (cx + i) as usize, (cy + i) as usize);
+                    println!("[{},{}]", (cx) as usize, (cy + i) as usize);
+                    println!("[{},{}]", (cx + i) as usize, (cy) as usize);
+                    println!("[{},{}]", (cx - i) as usize, (cy + i) as usize);
                 }
                 println!("");
                 return false;
@@ -219,12 +205,12 @@ fn main() {
     println!("开始游戏...   © GPL-2.0");
     loop {
         println!("{:#}", b1);
-        if b1.goto(b1.players[0].clone()){
+        if b1.goto(b1.players[0].clone()) {
             println!("{}获胜", p1.name);
             break;
         }
         println!("{:#}", b1);
-        if b1.goto(b1.players[1].clone()){
+        if b1.goto(b1.players[1].clone()) {
             println!("{}获胜", p2.name);
             break;
         }
