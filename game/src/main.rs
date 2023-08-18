@@ -170,17 +170,48 @@ impl Map<'_> {
                 clear();
                 println!("玩家[{}]进[{},{}].", p.name, c.x, c.y);
                 // 判断胜负!
-                let mut win: u8 = 0;
-                // TODO
+
                 let cx: i8 = c.x as i8;
                 let cy: i8 = c.y as i8;
+                let l0: [u8; 5] = [p.c, p.c, p.c, p.c, p.c];
+                println!("{},{}",(cy + 0) as usize,(cx + 0) as usize);
+                println!("{},{}",(cy + 1) as usize,(cx + 1) as usize);
+                println!("{},{}",(cy + 2) as usize,(cx + 2) as usize);
+                println!("{},{}",(cy + 3) as usize,(cx + 3) as usize);
+                println!("{},{}",(cy + 4) as usize,(cx + 4) as usize);
+                println!("");
+                println!("{},{}",(cy + 0) as usize,(cx - 0) as usize);
+                println!("{},{}",(cy + 1) as usize,(cx - 1) as usize);
+                println!("{},{}",(cy + 2) as usize,(cx - 2) as usize);
+                println!("{},{}",(cy + 3) as usize,(cx - 3) as usize);
+                println!("{},{}",(cy + 4) as usize,(cx - 4) as usize);
                 
-                for i in 0..5 {
-                    println!("[{},{}]", (cx + i) as usize, (cy + i) as usize);
-                    println!("[{},{}]", (cx) as usize, (cy + i) as usize);
-                    println!("[{},{}]", (cx + i) as usize, (cy) as usize);
-                    println!("[{},{}]", (cx - i) as usize, (cy + i) as usize);
-                }
+                let l_24: [u8; 5] = [
+                    self.index[(cy + 0) as usize][(cx + 0) as usize],
+                    self.index[(cy + 1) as usize][(cx + 1) as usize],
+                    self.index[(cy + 2) as usize][(cx + 2) as usize],
+                    self.index[(cy + 3) as usize][(cx + 3) as usize],
+                    self.index[(cy + 4) as usize][(cx + 4) as usize],
+                ];
+                
+                let l_31: [u8; 5] = [
+                    self.index[(cy + 0) as usize][(cx - 0) as usize],
+                    self.index[(cy + 1) as usize][(cx - 1) as usize],
+                    self.index[(cy + 2) as usize][(cx - 2) as usize],
+                    self.index[(cy + 3) as usize][(cx - 3) as usize],
+                    self.index[(cy + 4) as usize][(cx - 4) as usize],
+                ];
+                // 18446744073709551616 = 2^64
+                // 王克松 3-25-2
+                println!("{:?}",l_24);
+                println!("{:?}",l_31);
+                /*
+                println!("[{},{}]", cx + i, cy + i);
+                println!("[{},{}]", cx, cy + i);
+                println!("[{},{}]", cx + i, cy);
+                println!("[{},{}]", cx - i, cy + i);
+                */
+
                 println!("");
                 return false;
             }
