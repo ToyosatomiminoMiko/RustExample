@@ -3,6 +3,47 @@ use std::fmt;
 use std::io;
 use std::num::ParseIntError;
 //use std::process::Command;
+
+fn c_m(c: &Point2D) -> [usize; 4] {
+    let cx: u8 = c.x;
+    let cy: u8 = c.y;
+    let max = |mut x: u8| {
+        let mut i: u8 = 0;
+        loop {
+            if x < 9 {
+                x += 1;
+                i += 1;
+                if i == 4 {
+                    break x;
+                }
+            } else {
+                break x;
+            }
+        }
+    };
+    let min = |mut x: u8| {
+        let mut i: u8 = 0;
+        loop {
+            if x > 0 {
+                x -= 1;
+                i += 1;
+                if i == 4 {
+                    break x;
+                }
+            } else {
+                break x;
+            }
+        }
+    };
+    [
+        max(cx) as usize, //x_max
+        min(cx) as usize, //x_min
+        max(cy) as usize, //y_max
+        min(cy) as usize, //y_min
+    ]
+}
+
+/*
 fn range_check(c: &Point2D, a: u8, b: u8) -> bool {
     if (c.x > a) | (c.y > b) {
         true
@@ -10,6 +51,7 @@ fn range_check(c: &Point2D, a: u8, b: u8) -> bool {
         false
     }
 }
+*/
 
 fn clear() {
     // 清除屏幕
@@ -157,12 +199,17 @@ impl Map<'_> {
         loop {
             println!("玩家[{}]请输入坐标:", p.name);
             let c: Point2D = Point2D::create();
-            if range_check(&c, 9, 9) {
-                //clear();
+            if (|c: &Point2D, a: u8, b: u8| {
+                if (c.x > a) | (c.y > b) {
+                    true
+                } else {
+                    false
+                }
+            })(&c, 9, 9)
+            {
                 println!("超出范围,请重新输入.");
                 continue;
             } else if self.index[c.y as usize][c.x as usize] != 0 {
-                //clear();
                 println!("这里已经有人了.");
                 continue;
             } else {
@@ -171,21 +218,22 @@ impl Map<'_> {
                 println!("玩家[{}]进[{},{}].", p.name, c.x, c.y);
                 // 判断胜负!
 
-                let cx: i8 = c.x as i8;
-                let cy: i8 = c.y as i8;
-                let l0: [u8; 5] = [p.c, p.c, p.c, p.c, p.c];
-                println!("{},{}",(cy + 0) as usize,(cx + 0) as usize);
-                println!("{},{}",(cy + 1) as usize,(cx + 1) as usize);
-                println!("{},{}",(cy + 2) as usize,(cx + 2) as usize);
-                println!("{},{}",(cy + 3) as usize,(cx + 3) as usize);
-                println!("{},{}",(cy + 4) as usize,(cx + 4) as usize);
+                //let l0: [u8; 5] = [p.c, p.c, p.c, p.c, p.c];
+                println!("{:?}", c_m(&c));
+
+                /*
+                println!("{},{}", (cy + 0) as usize, (cx + 0) as usize);
+                println!("{},{}", (cy + 1) as usize, (cx + 1) as usize);
+                println!("{},{}", (cy + 2) as usize, (cx + 2) as usize);
+                println!("{},{}", (cy + 3) as usize, (cx + 3) as usize);
+                println!("{},{}", (cy + 4) as usize, (cx + 4) as usize);
                 println!("");
-                println!("{},{}",(cy + 0) as usize,(cx - 0) as usize);
-                println!("{},{}",(cy + 1) as usize,(cx - 1) as usize);
-                println!("{},{}",(cy + 2) as usize,(cx - 2) as usize);
-                println!("{},{}",(cy + 3) as usize,(cx - 3) as usize);
-                println!("{},{}",(cy + 4) as usize,(cx - 4) as usize);
-                
+                println!("{},{}", (cy + 0) as usize, (cx - 0) as usize);
+                println!("{},{}", (cy + 1) as usize, (cx - 1) as usize);
+                println!("{},{}", (cy + 2) as usize, (cx - 2) as usize);
+                println!("{},{}", (cy + 3) as usize, (cx - 3) as usize);
+                println!("{},{}", (cy + 4) as usize, (cx - 4) as usize);
+
                 let l_24: [u8; 5] = [
                     self.index[(cy + 0) as usize][(cx + 0) as usize],
                     self.index[(cy + 1) as usize][(cx + 1) as usize],
@@ -193,7 +241,7 @@ impl Map<'_> {
                     self.index[(cy + 3) as usize][(cx + 3) as usize],
                     self.index[(cy + 4) as usize][(cx + 4) as usize],
                 ];
-                
+
                 let l_31: [u8; 5] = [
                     self.index[(cy + 0) as usize][(cx - 0) as usize],
                     self.index[(cy + 1) as usize][(cx - 1) as usize],
@@ -201,10 +249,11 @@ impl Map<'_> {
                     self.index[(cy + 3) as usize][(cx - 3) as usize],
                     self.index[(cy + 4) as usize][(cx - 4) as usize],
                 ];
+                */
                 // 18446744073709551616 = 2^64
-                // 王克松 3-25-2
-                println!("{:?}",l_24);
-                println!("{:?}",l_31);
+                // 王克松 3-2502
+                //println!("{:?}", l_24);
+                //println!("{:?}", l_31);
                 /*
                 println!("[{},{}]", cx + i, cy + i);
                 println!("[{},{}]", cx, cy + i);
