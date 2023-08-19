@@ -4,7 +4,7 @@ use std::io;
 use std::num::ParseIntError;
 //use std::process::Command;
 
-fn win(l1: [u8; 5], l2: [u8; 5])->bool{
+fn win(l1: [u8; 5], l2: [u8; 5]) -> bool {
     if l1 == l2 {
         true
     } else {
@@ -50,8 +50,8 @@ fn c_m(c: &Point2D) -> [usize; 4] {
         max(cy) as usize, //y_max
         min(cy) as usize, //y_min
     ]
-}
-*/
+}*/
+
 /*
 fn range_check(c: &Point2D, a: u8, b: u8) -> bool {
     if (c.x > a) | (c.y > b) {
@@ -229,56 +229,48 @@ impl Map<'_> {
 
                 let l0: [u8; 5] = [p.c, p.c, p.c, p.c, p.c];
                 // x_max,x_min,y_max,y_min
-                //println!("{:?}", c_m(&c));
+                //let lm: [usize; 4] = c_m(&c);
+                //println!("{:?}", lm);
                 //displacement
-                
+
                 let cx: usize = c.x as usize;
                 let cy: usize = c.y as usize;
-                if c.x <= 4 {
-                    for x_dpm in 0..(c.x + 1) {
-                        /*
-                        println!("x{}", x_dpm + 0);
-                        println!("x{}", x_dpm + 1);
-                        println!("x{}", x_dpm + 2);
-                        println!("x{}", x_dpm + 3);
-                        println!("x{}", x_dpm + 4);
-                        */
-                        let l_x: [u8; 5] = [
-                            self.index[cy][(x_dpm + 0) as usize],
-                            self.index[cy][(x_dpm + 1) as usize],
-                            self.index[cy][(x_dpm + 2) as usize],
-                            self.index[cy][(x_dpm + 3) as usize],
-                            self.index[cy][(x_dpm + 4) as usize],
-                        ];
-                        println!("{:?}", l_x);
-                        if win(l_x,l0){
-                            return true;
-                        }
+                //let x_dpm: usize= lm[0] - lm[1];
+                //let y_dpm: usize= lm[2] - lm[3];
+
+                for x_dpm in 0..(c.x + 1) {
+
+                    if x_dpm + 4 >= 10 {
+                        break;
                     }
-                } else if c.x >= 5 {
+                    let l_x: [u8; 5] = [
+                        self.index[cy][(x_dpm + 0) as usize],
+                        self.index[cy][(x_dpm + 1) as usize],
+                        self.index[cy][(x_dpm + 2) as usize],
+                        self.index[cy][(x_dpm + 3) as usize],
+                        self.index[cy][(x_dpm + 4) as usize],
+                    ];
+                    println!("l_x{:?}", l_x);
+                    if win(l_x, l0) {
+                        return true;
+                    }
                 }
-                if c.y <= 4 {
-                    for y_dpm in 0..(c.y + 1) {
-                        /*
-                        println!("y{}", y_dpm + 0);
-                        println!("y{}", y_dpm + 1);
-                        println!("y{}", y_dpm + 2);
-                        println!("y{}", y_dpm + 3);
-                        println!("y{}", y_dpm + 4);
-                        */
-                        let l_y: [u8; 5] = [
-                            self.index[(y_dpm + 0) as usize][cx],
-                            self.index[(y_dpm + 1) as usize][cx],
-                            self.index[(y_dpm + 2) as usize][cx],
-                            self.index[(y_dpm + 3) as usize][cx],
-                            self.index[(y_dpm + 4) as usize][cx],
-                        ];
-                        println!("{:?}", l_y);
-                        if win(l_y,l0){
-                            return true;
-                        }
+
+                for y_dpm in 0..(c.y + 1) {
+                    if y_dpm + 4 >= 10 {
+                        break;
                     }
-                } else if c.y >= 5 {
+                    let l_y: [u8; 5] = [
+                        self.index[(y_dpm + 0) as usize][cx],
+                        self.index[(y_dpm + 1) as usize][cx],
+                        self.index[(y_dpm + 2) as usize][cx],
+                        self.index[(y_dpm + 3) as usize][cx],
+                        self.index[(y_dpm + 4) as usize][cx],
+                    ];
+                    println!("l_y{:?}", l_y);
+                    if win(l_y, l0) {
+                        return true;
+                    }
                 }
 
                 /*
@@ -314,12 +306,6 @@ impl Map<'_> {
                 // 王克松 3-2502
                 //println!("{:?}", l_24);
                 //println!("{:?}", l_31);
-                /*
-                println!("[{},{}]", cx + i, cy + i);
-                println!("[{},{}]", cx, cy + i);
-                println!("[{},{}]", cx + i, cy);
-                println!("[{},{}]", cx - i, cy + i);
-                */
 
                 println!("");
                 return false;
