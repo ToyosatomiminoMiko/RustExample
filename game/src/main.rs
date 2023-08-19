@@ -4,6 +4,15 @@ use std::io;
 use std::num::ParseIntError;
 //use std::process::Command;
 
+fn win(l1: [u8; 5], l2: [u8; 5])->bool{
+    if l1 == l2 {
+        true
+    } else {
+        false
+    }
+}
+
+/*
 fn c_m(c: &Point2D) -> [usize; 4] {
     let cx: u8 = c.x;
     let cy: u8 = c.y;
@@ -42,7 +51,7 @@ fn c_m(c: &Point2D) -> [usize; 4] {
         min(cy) as usize, //y_min
     ]
 }
-
+*/
 /*
 fn range_check(c: &Point2D, a: u8, b: u8) -> bool {
     if (c.x > a) | (c.y > b) {
@@ -218,8 +227,59 @@ impl Map<'_> {
                 println!("玩家[{}]进[{},{}].", p.name, c.x, c.y);
                 // 判断胜负!
 
-                //let l0: [u8; 5] = [p.c, p.c, p.c, p.c, p.c];
-                println!("{:?}", c_m(&c));
+                let l0: [u8; 5] = [p.c, p.c, p.c, p.c, p.c];
+                // x_max,x_min,y_max,y_min
+                //println!("{:?}", c_m(&c));
+                //displacement
+                
+                let cx: usize = c.x as usize;
+                let cy: usize = c.y as usize;
+                if c.x <= 4 {
+                    for x_dpm in 0..(c.x + 1) {
+                        /*
+                        println!("x{}", x_dpm + 0);
+                        println!("x{}", x_dpm + 1);
+                        println!("x{}", x_dpm + 2);
+                        println!("x{}", x_dpm + 3);
+                        println!("x{}", x_dpm + 4);
+                        */
+                        let l_x: [u8; 5] = [
+                            self.index[cy][(x_dpm + 0) as usize],
+                            self.index[cy][(x_dpm + 1) as usize],
+                            self.index[cy][(x_dpm + 2) as usize],
+                            self.index[cy][(x_dpm + 3) as usize],
+                            self.index[cy][(x_dpm + 4) as usize],
+                        ];
+                        println!("{:?}", l_x);
+                        if win(l_x,l0){
+                            return true;
+                        }
+                    }
+                } else if c.x >= 5 {
+                }
+                if c.y <= 4 {
+                    for y_dpm in 0..(c.y + 1) {
+                        /*
+                        println!("y{}", y_dpm + 0);
+                        println!("y{}", y_dpm + 1);
+                        println!("y{}", y_dpm + 2);
+                        println!("y{}", y_dpm + 3);
+                        println!("y{}", y_dpm + 4);
+                        */
+                        let l_y: [u8; 5] = [
+                            self.index[(y_dpm + 0) as usize][cx],
+                            self.index[(y_dpm + 1) as usize][cx],
+                            self.index[(y_dpm + 2) as usize][cx],
+                            self.index[(y_dpm + 3) as usize][cx],
+                            self.index[(y_dpm + 4) as usize][cx],
+                        ];
+                        println!("{:?}", l_y);
+                        if win(l_y,l0){
+                            return true;
+                        }
+                    }
+                } else if c.y >= 5 {
+                }
 
                 /*
                 println!("{},{}", (cy + 0) as usize, (cx + 0) as usize);
