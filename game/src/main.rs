@@ -1,8 +1,32 @@
+/*
+Rust实现的一款简单的五子棋终端游戏
+Copyright (C) 2023  郝季仁
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
+version: 0.0.1
+2023.08.20.18:01
+*/
 use std::fmt;
 //use std::fmt::Error;
 use std::io;
 use std::num::ParseIntError;
 //use std::process::Command;
+
+
 
 fn win(l1: [u8; 5], l2: [u8; 5]) -> bool {
     if l1 == l2 {
@@ -208,7 +232,6 @@ impl Map<'_> {
                 let cy: usize = c.y as usize;
                 //let x_dpm: usize= lm[0] - lm[1];
                 //let y_dpm: usize= lm[2] - lm[3];
-
                 for x_dpm in 0..(c.x + 1) {
                     if x_dpm + 4 >= 10 {
                         break;
@@ -251,33 +274,30 @@ impl Map<'_> {
                         if win(l_24, l0) {
                             return true;
                         }
+                    }
 
-                        if (x_dpm as i8) - 4 < 0 {
-                            break;
-                        }
-                        /*
-                        println!("l_31:");
-                        println!("{},{}", y_dpm + 0, x_dpm - 0);
-                        println!("{},{}", y_dpm + 1, x_dpm - 1);
-                        println!("{},{}", y_dpm + 2, x_dpm - 2);
-                        println!("{},{}", y_dpm + 3, x_dpm - 3);
-                        println!("{},{}", y_dpm + 4, x_dpm - 4);
-                        */
-
+                    if (x_dpm as i8) + 4 > 9 {
+                        break;
+                    }
+                    // y=[4,9],x=[0,5]
+                    // array.reverse();
+                    let ydpm: [i8; 6] = [9, 8, 7, 6, 5, 4];
+                    for y_dpm in ydpm {
+                        //loop {
                         let l_31: [u8; 5] = [
-                            self.index[(y_dpm + 0) as usize][(x_dpm - 0) as usize],
-                            self.index[(y_dpm + 1) as usize][(x_dpm - 1) as usize],
-                            self.index[(y_dpm + 2) as usize][(x_dpm - 2) as usize],
-                            self.index[(y_dpm + 3) as usize][(x_dpm - 3) as usize],
-                            self.index[(y_dpm + 4) as usize][(x_dpm - 4) as usize],
+                            self.index[(y_dpm - 0) as usize][(x_dpm + 0) as usize],
+                            self.index[(y_dpm - 1) as usize][(x_dpm + 1) as usize],
+                            self.index[(y_dpm - 2) as usize][(x_dpm + 2) as usize],
+                            self.index[(y_dpm - 3) as usize][(x_dpm + 3) as usize],
+                            self.index[(y_dpm - 4) as usize][(x_dpm + 4) as usize],
                         ];
-
                         //println!("l_31{:?}", l_31);
                         if win(l_31, l0) {
                             return true;
                         }
                     }
                 }
+
                 // 18446744073709551616 = 2^64
                 // 王克松 3-2502
                 //println!("{:?}", l_24);
@@ -290,6 +310,7 @@ impl Map<'_> {
 }
 
 fn main() {
+    let mut n:u8 = 0;
     let p1: Player = Player {
         name: String::from("nmsl@"),
         c: 1,
@@ -303,7 +324,7 @@ fn main() {
         players: [&p1, &p2],
     };
     clear();
-    println!("开始游戏...   © GPL-2.0");
+    println!("开始游戏...");
     loop {
         println!("{:#}", b1);
         if b1.goto(b1.players[0].clone()) {
@@ -315,5 +336,11 @@ fn main() {
             println!("{}获胜", p2.name);
             break;
         }
+        n+=1;
+        if n >= 100{
+            println!("平局...");
+            break;
+        }
     }
+    println!("{:#}", b1);
 }
