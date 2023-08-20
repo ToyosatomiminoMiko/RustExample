@@ -143,35 +143,6 @@ struct Player {
     name: String,
     c: u8,
 }
-impl Player {
-    /* // new!!
-    fn goto(&mut self) {
-        loop {
-            let c = Point2D::create();
-
-            if self.board.index[c.x as usize][c.y as usize] != 0 {
-                println!("这里已经有人了.");
-                continue;
-            }
-            self.board.index[c.x as usize][c.y as usize] = self.c;
-            println!("player [{}] goto the [{},{}]", self.name, c.x, c.y);
-            break;
-        }
-    }*/
-    /*
-    fn goto(&mut self) {
-        loop {
-            let c = Point2D::create();
-            if self.board.index[c.x as usize][c.y as usize] != 0 {
-                println!("这里已经有人了.");
-                continue;
-            }
-            self.board.index[c.x as usize][c.y as usize] = self.c;
-            println!("player [{}] goto the [{},{}]", self.name, c.x, c.y);
-            break;
-        }
-    }*/
-}
 
 //#[derive(Clone)]
 pub struct Map<'a> {
@@ -239,7 +210,6 @@ impl Map<'_> {
                 //let y_dpm: usize= lm[2] - lm[3];
 
                 for x_dpm in 0..(c.x + 1) {
-
                     if x_dpm + 4 >= 10 {
                         break;
                     }
@@ -250,63 +220,68 @@ impl Map<'_> {
                         self.index[cy][(x_dpm + 3) as usize],
                         self.index[cy][(x_dpm + 4) as usize],
                     ];
-                    println!("l_x{:?}", l_x);
+                    //println!("l_x{:?}", l_x);
                     if win(l_x, l0) {
                         return true;
                     }
-                }
 
-                for y_dpm in 0..(c.y + 1) {
-                    if y_dpm + 4 >= 10 {
-                        break;
+                    for y_dpm in 0..(c.y + 1) {
+                        if y_dpm + 4 >= 10 {
+                            break;
+                        }
+                        let l_y: [u8; 5] = [
+                            self.index[(y_dpm + 0) as usize][cx],
+                            self.index[(y_dpm + 1) as usize][cx],
+                            self.index[(y_dpm + 2) as usize][cx],
+                            self.index[(y_dpm + 3) as usize][cx],
+                            self.index[(y_dpm + 4) as usize][cx],
+                        ];
+                        //println!("l_y{:?}", l_y);
+                        if win(l_y, l0) {
+                            return true;
+                        }
+                        let l_24: [u8; 5] = [
+                            self.index[(y_dpm + 0) as usize][(x_dpm + 0) as usize],
+                            self.index[(y_dpm + 1) as usize][(x_dpm + 1) as usize],
+                            self.index[(y_dpm + 2) as usize][(x_dpm + 2) as usize],
+                            self.index[(y_dpm + 3) as usize][(x_dpm + 3) as usize],
+                            self.index[(y_dpm + 4) as usize][(x_dpm + 4) as usize],
+                        ];
+                        //println!("l_24{:?}", l_24);
+                        if win(l_24, l0) {
+                            return true;
+                        }
+
+                        if (x_dpm as i8) - 4 < 0 {
+                            break;
+                        }
+                        /*
+                        println!("l_31:");
+                        println!("{},{}", y_dpm + 0, x_dpm - 0);
+                        println!("{},{}", y_dpm + 1, x_dpm - 1);
+                        println!("{},{}", y_dpm + 2, x_dpm - 2);
+                        println!("{},{}", y_dpm + 3, x_dpm - 3);
+                        println!("{},{}", y_dpm + 4, x_dpm - 4);
+                        */
+
+                        let l_31: [u8; 5] = [
+                            self.index[(y_dpm + 0) as usize][(x_dpm - 0) as usize],
+                            self.index[(y_dpm + 1) as usize][(x_dpm - 1) as usize],
+                            self.index[(y_dpm + 2) as usize][(x_dpm - 2) as usize],
+                            self.index[(y_dpm + 3) as usize][(x_dpm - 3) as usize],
+                            self.index[(y_dpm + 4) as usize][(x_dpm - 4) as usize],
+                        ];
+
+                        //println!("l_31{:?}", l_31);
+                        if win(l_31, l0) {
+                            return true;
+                        }
                     }
-                    let l_y: [u8; 5] = [
-                        self.index[(y_dpm + 0) as usize][cx],
-                        self.index[(y_dpm + 1) as usize][cx],
-                        self.index[(y_dpm + 2) as usize][cx],
-                        self.index[(y_dpm + 3) as usize][cx],
-                        self.index[(y_dpm + 4) as usize][cx],
-                    ];
-                    println!("l_y{:?}", l_y);
-                    if win(l_y, l0) {
-                        return true;
-                    }
                 }
-
-                /*
-                println!("{},{}", (cy + 0) as usize, (cx + 0) as usize);
-                println!("{},{}", (cy + 1) as usize, (cx + 1) as usize);
-                println!("{},{}", (cy + 2) as usize, (cx + 2) as usize);
-                println!("{},{}", (cy + 3) as usize, (cx + 3) as usize);
-                println!("{},{}", (cy + 4) as usize, (cx + 4) as usize);
-                println!("");
-                println!("{},{}", (cy + 0) as usize, (cx - 0) as usize);
-                println!("{},{}", (cy + 1) as usize, (cx - 1) as usize);
-                println!("{},{}", (cy + 2) as usize, (cx - 2) as usize);
-                println!("{},{}", (cy + 3) as usize, (cx - 3) as usize);
-                println!("{},{}", (cy + 4) as usize, (cx - 4) as usize);
-
-                let l_24: [u8; 5] = [
-                    self.index[(cy + 0) as usize][(cx + 0) as usize],
-                    self.index[(cy + 1) as usize][(cx + 1) as usize],
-                    self.index[(cy + 2) as usize][(cx + 2) as usize],
-                    self.index[(cy + 3) as usize][(cx + 3) as usize],
-                    self.index[(cy + 4) as usize][(cx + 4) as usize],
-                ];
-
-                let l_31: [u8; 5] = [
-                    self.index[(cy + 0) as usize][(cx - 0) as usize],
-                    self.index[(cy + 1) as usize][(cx - 1) as usize],
-                    self.index[(cy + 2) as usize][(cx - 2) as usize],
-                    self.index[(cy + 3) as usize][(cx - 3) as usize],
-                    self.index[(cy + 4) as usize][(cx - 4) as usize],
-                ];
-                */
                 // 18446744073709551616 = 2^64
                 // 王克松 3-2502
                 //println!("{:?}", l_24);
                 //println!("{:?}", l_31);
-
                 println!("");
                 return false;
             }
