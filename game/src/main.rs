@@ -1,5 +1,5 @@
 /*
-Rust实现的一款简单的五子棋终端游戏
+一款简单的五子棋终端游戏
 Copyright (C) 2023  郝季仁
 
 This program is free software; you can redistribute it and/or
