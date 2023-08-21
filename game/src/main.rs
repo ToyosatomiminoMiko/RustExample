@@ -18,15 +18,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 version: 0.0.1
-2023.08.20.22:17
+2023.08.20.18:01
 */
 use std::fmt;
 //use std::fmt::Error;
 use std::io;
 use std::num::ParseIntError;
 //use std::process::Command;
-
-
 
 fn win(l1: [u8; 5], l2: [u8; 5]) -> bool {
     if l1 == l2 {
@@ -310,7 +308,7 @@ impl Map<'_> {
 }
 
 fn main() {
-    let mut n:u8 = 0;
+    let mut n: u8 = 0;
     let p1: Player = Player {
         name: String::from("nmsl@"),
         c: 1,
@@ -331,13 +329,14 @@ fn main() {
             println!("{}获胜", p1.name);
             break;
         }
+        n += 1;
         println!("{:#}", b1);
         if b1.goto(b1.players[1].clone()) {
             println!("{}获胜", p2.name);
             break;
         }
-        n+=1;
-        if n >= 100{
+        n += 1;
+        if n >= 100 {
             println!("平局...");
             break;
         }
