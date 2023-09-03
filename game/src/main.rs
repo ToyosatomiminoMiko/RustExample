@@ -17,8 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-version: 0.0.1
+version 0.0.1:
 2023.08.20.18:01
+version 0.0.2:
+bug [140,144]
 */
 use std::fmt;
 //use std::fmt::Error;
@@ -135,20 +137,34 @@ impl Point2D {
                 y: stoi(v[1]),
             };
             */
+            if v.len() != 2 {
+                //drop(input);
+                println!("请输入坐标!");
+                continue;
+            }
+            let mut p2d: [u8; 2] = [0, 0];
             match stoi(v[0]) {
-                Ok(x0) => match stoi(v[1]) {
-                    Ok(y0) => {
-                        break Point2D { x: x0, y: y0 };
-                    }
-                    Err(_) => {
-                        println!("请输入坐标!");
-                        continue;
-                    }
-                },
+                Ok(x0) => {
+                    //p2d[0] = x0;
+                    p2d[0] = x0;
+                }
                 Err(_) => {
                     println!("请输入坐标!");
                     continue;
                 }
+            };
+            match stoi(v[1]) {
+                Ok(y0) => {
+                    p2d[1] = y0;
+                }
+                Err(_) => {
+                    println!("请输入坐标!");
+                    continue;
+                }
+            };
+            break Point2D {
+                x: p2d[0],
+                y: p2d[1],
             };
         }
     }
@@ -309,6 +325,7 @@ impl Map<'_> {
 
 fn main() {
     let mut n: u8 = 0;
+
     let p1: Player = Player {
         name: String::from("nmsl@"),
         c: 1,
@@ -321,8 +338,10 @@ fn main() {
         index: [[0; 10]; 10],
         players: [&p1, &p2],
     };
+
     clear();
     println!("开始游戏...");
+
     loop {
         println!("{:#}", b1);
         if b1.goto(b1.players[0].clone()) {
@@ -341,5 +360,6 @@ fn main() {
             break;
         }
     }
+
     println!("{:#}", b1);
 }
