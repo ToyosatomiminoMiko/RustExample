@@ -77,14 +77,10 @@ fn c_m(c: &Point2D) -> [usize; 4] {
 }*/
 
 /*
-fn range_check(c: &Point2D, a: u8, b: u8) -> bool {
-    if (c.x > a) | (c.y > b) {
-        true
-    } else {
-        false
-    }
-}
-*/
+fn range_check(x: u8, y: u8) -> bool {
+    // if (c.x > a) | (c.y > b) {true} else {false}
+    (x <= 9) & (y <= 9)
+}*/
 
 fn clear() {
     // 清除屏幕
@@ -108,9 +104,7 @@ fn stoi(s: &str) -> Result<u8, ParseIntError> {
 
 #[derive(Debug)]
 pub struct Point2D {
-    /*
-    坐标
-     */
+    // 坐标
     x: u8,
     y: u8,
 }
