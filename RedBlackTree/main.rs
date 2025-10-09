@@ -110,7 +110,7 @@ impl<K: Ord + Display + Clone, V: Display + Clone> RBNode<K, V> {
             node_right.color = Color::Black;
         }
     }
-    
+
     pub fn fix_up(mut node: Box<RBNode<K, V>>) -> Box<RBNode<K, V>> {
         // rotate left: right = red && left = black
         if Self::is_red(&node.right) && !Self::is_red(&node.left) {
@@ -132,7 +132,7 @@ impl<K: Ord + Display + Clone, V: Display + Clone> RBNode<K, V> {
     }
     // 可视化打印树结构
     pub fn print_tree(&self) {
-        println!("Red-Black Tree Structure:");
+        //println!("Red-Black Tree Structure:");
         self.print_tree_recursive(0, "Root:");
     }
 
@@ -186,16 +186,19 @@ impl<K: Ord + Display + Clone, V: Display + Clone> RBTree<K, V> {
             println!("Empty tree");
         }
     }
+    /* 
+    pub fn traversal(&self){
+        let node = self.root;
+        
+    }*/
+
 }
 
 fn main() {
     println!("Red-Black Tree!");
     let mut tree00: RBTree<u32, String> = RBTree::new();
-    tree00.insert(17, "test01node".to_string());
-    tree00.insert(0, "test02node".to_string());
-    println!("0x00:\ninsert node\n{:#?}", tree00);
-    tree00.insert(0, "test08".to_string());
-    let data = vec![
+    //println!("0x00:\ninsert node\n{:#?}", tree00);
+    let data: Vec<(u32, &'static str)> = vec![
         (10, "Alice"),
         (5, "Bob"),
         (15, "Charlie"),
@@ -211,7 +214,17 @@ fn main() {
     ];
 
     for (key, value) in data {
+        println!("inserted {}:{}", &key, &value);
         tree00.insert(key, value.to_string());
         tree00.print_tree();
-    } 
+        print!("\n");
+    }
+    println!(
+        "root node color: {}",
+        if RBNode::is_red(&tree00.root) {
+            "Red"
+        } else {
+            "Black"
+        }
+    );
 }
